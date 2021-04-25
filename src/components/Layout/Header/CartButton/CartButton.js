@@ -1,18 +1,38 @@
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import HeaderCartIcon from "../../../Cart/HeaderCartIcon/HeaderCartIcon";
-import classes from "./CartButton.module.css";
 
 import styles from "./CartButton.module.css";
 
 const CartButton = (props) => {
-  // take props.items from redux store and .reduce() by amount to display on span
-  const itemsInCart = props.items.reduce((currNumber, item) => {
+  // adding animation!
+  const [btnIsAnimating, setBtnIsAnimating] = useState(false);
+
+  const items = props.items;
+
+  const bntStyles = `${styles.button} ${btnIsAnimating && styles.bump}`;
+
+  // using useEffect to add 'side effect' of animation
+  useEffect(() => {
+    if (items.length === 0) return;
+    setBtnIsAnimating(true);
+
+    const AnimationTimer = setTimeout(() => {
+      setBtnIsAnimating(false);
+    }, 300);
+
+    return () => {
+      clearTimeout(AnimationTimer);
+    };
+  }, [items]);
+
+  const itemsInCart = items.reduce((currNumber, item) => {
     return currNumber + item.amount;
   }, 0);
 
   return (
-    <button className={classes.button} onClick={props.clicked}>
+    <button className={bntStyles} onClick={props.clicked}>
       <span className={styles.icon}>
         <HeaderCartIcon />
       </span>

@@ -1,1 +1,1 @@
-export { addItemToCart } from "./cartActions";
+export { addItemToCart, removeItemFromCart } from "./cartActions";

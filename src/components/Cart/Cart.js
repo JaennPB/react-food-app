@@ -8,14 +8,16 @@ import styles from "./Cart.module.css";
 
 const Cart = (props) => {
   const addItemHandler = (item) => {
-    // TODO: review
     props.addItemToCart({
       ...item,
+      // setting amount back to 1 and NOT from child form
       amount: 1,
     });
   };
 
-  const removeItemHandler = (id) => {};
+  const removeItemHandler = (item) => {
+    props.removeItemFromCart(item);
+  };
 
   const cartItems = props.items.map((item) => {
     return (
@@ -24,8 +26,9 @@ const Cart = (props) => {
         name={item.name}
         price={item.price}
         amount={item.amount}
+        // bind lets us pass arguments without invoking function
         onAdd={addItemHandler.bind(null, item)}
-        onRemove={removeItemHandler.bind(null, item.id)}
+        onRemove={removeItemHandler.bind(null, item)}
       />
     );
   });

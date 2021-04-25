@@ -6,7 +6,7 @@ import * as actions from "../../../store/actions/actionsIndex";
 import styles from "./MealItem.module.css";
 
 const MealItem = (props) => {
-  //receives amount from child form and sends new object as new item added to store [{}, {}, ...etc]
+  // receives amount from child form and sends new object as new item added to store [{}, {}, ...etc]
   const addItemToCartHandler = (amountFromChild) => {
     const item = {
       id: props.id,
