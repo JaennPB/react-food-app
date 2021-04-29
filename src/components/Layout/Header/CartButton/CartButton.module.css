@@ -2,9 +2,9 @@
   cursor: pointer;
   font: inherit;
   border: none;
-  background-color: #a0a0a0;
+  background-color: #b6d094;
   color: white;
-  padding: 0.75rem 3rem;
+  padding: 0.3rem 1.5rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -14,7 +14,7 @@
 
 .button:hover,
 .button:active {
-  background-color: #c9c5c5;
+  background-color: #c0dd9b;
 }
 
 .icon {
@@ -24,16 +24,11 @@
 }
 
 .badge {
-  background-color: #338073;
+  background-color: #8aa567;
   padding: 0.25rem 1rem;
   border-radius: 25px;
   margin-left: 1rem;
   font-weight: bold;
-}
-
-.button:hover .badge,
-.button:active .badge {
-  background-color: #64a56f;
 }
 
 .bump {

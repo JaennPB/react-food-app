@@ -19,28 +19,39 @@
   text-align: right;
 }
 
-.actions button {
+.button {
+  color: white;
+  background-color: #8aa567;
+  border: 0.1rem solid #8aa567;
+
   font: inherit;
   cursor: pointer;
-  background-color: transparent;
-  border: 1px solid #8a2b06;
   padding: 0.5rem 2rem;
   border-radius: 25px;
   margin-left: 1rem;
 }
 
-.actions button:hover,
-.actions button:active {
-  background-color: #5a1a01;
-  border-color: #5a1a01;
-  color: white;
+.button:hover,
+.button:active {
+  background-color: #a2c07b;
+  border: 0.1rem solid #a2c07b;
 }
 
-.actions .buttonAlt {
-  color: #8a2b06;
+.buttonAlt {
+  color: #cc444b;
+  background-color: white;
+  border: 0.1rem solid #cc444b;
+
+  font: inherit;
+  cursor: pointer;
+  padding: 0.5rem 2rem;
+  border-radius: 25px;
+  margin-left: 1rem;
 }
 
-.actions .button {
-  background-color: #8a2b06;
+.buttonAlt:hover,
+.buttonAlt:active {
+  background-color: #da4d54;
+  border: 0.1rem solid #da4d54;
   color: white;
 }

@@ -32,6 +32,11 @@ const AvailableMeals = (props) => {
     <section className={styles.meals}>
       <Card>
         {props.isLoading && <Spinner />}
+        {props.error && (
+          <p className={styles.errorMsg}>
+            Could not load meals... please try again!
+          </p>
+        )}
         <ul>{mealsList}</ul>
       </Card>
     </section>
@@ -42,6 +47,7 @@ const mapStateToProps = (state) => {
   return {
     meals: state.meals.meals,
     isLoading: state.meals.loading,
+    error: state.meals.error,
   };
 };
 

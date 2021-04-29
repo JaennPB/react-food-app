@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initalState = {
   meals: [],
   loading: false,
+  error: null,
 };
 
 const mealsReducer = (state = initalState, actions) => {
@@ -22,6 +23,7 @@ const mealsReducer = (state = initalState, actions) => {
       return {
         ...state,
         loading: false,
+        error: true,
       };
     default:
       return state;

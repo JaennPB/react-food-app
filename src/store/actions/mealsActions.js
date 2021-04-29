@@ -15,9 +15,10 @@ const loadingMeals = () => {
   };
 };
 
-const getMealsError = () => {
+const getMealsError = (msg) => {
   return {
     type: actionTypes.GET_MEALS_ERROR,
+    msg: msg,
   };
 };
 
@@ -28,6 +29,7 @@ export const asyncFetchMeals = () => {
       const res = await axios.get(
         "https://meal-delivery-app-4e7f3-default-rtdb.firebaseio.com/meals.json"
       );
+
       const fetchedMeals = [];
       for (const key in res.data) {
         fetchedMeals.push({ ...res.data[key], id: key });

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #8a2b06;
+  border-bottom: 2px solid #cc444b;
   padding: 1rem 0;
   margin: 1rem 0;
 }
@@ -21,7 +21,7 @@
 
 .price {
   font-weight: bold;
-  color: #8a2b06;
+  color: #cc444b;
 }
 
 .amount {
@@ -34,19 +34,19 @@
 
 .actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .cartItems button {
   font: inherit;
   font-weight: bold;
   font-size: 1.25rem;
-  color: #8a2b06;
-  border: 1px solid #8a2b06;
-  width: 3rem;
+  color: white;
   text-align: center;
-  border-radius: 6px;
-  background-color: transparent;
+  border-radius: 20px;
+  padding: 0.2rem 0.8rem;
+  background-color: #8aa567;
+  border: none;
   cursor: pointer;
   margin-left: 1rem;
   margin: 0.25rem;
@@ -54,6 +54,6 @@
 
 .cartItems button:hover,
 .cartItems button:active {
-  background-color: #8a2b06;
+  background-color: #a2c07b;
   color: white;
 }
