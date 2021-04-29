@@ -54,8 +54,8 @@ const Cart = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    items: state.items,
-    totalAmount: state.totalAmount,
+    items: state.cart.items,
+    totalAmount: state.cart.totalAmount,
   };
 };
 
