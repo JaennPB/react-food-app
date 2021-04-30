@@ -5,6 +5,7 @@ import CartItem from "./CartItem/CartItem";
 import * as actions from "../../store/actions/actionsIndex";
 
 import styles from "./Cart.module.css";
+import Checkout from "./Checkout/Checkout";
 
 const Cart = (props) => {
   const addItemHandler = (item) => {
@@ -17,6 +18,10 @@ const Cart = (props) => {
 
   const removeItemHandler = (item) => {
     props.removeItemFromCart(item);
+  };
+
+  const startCheckoutHandler = () => {
+    props.startCheckout();
   };
 
   const cartItems = props.items.map((item) => {
@@ -38,21 +43,28 @@ const Cart = (props) => {
     totalAmount = 0;
   }
 
+  const modalActionsBeforeCheckout = (
+    <div className={styles.actions}>
+      <button className={styles.buttonAlt} onClick={props.closeCartModal}>
+        Go back
+      </button>
+      {props.items.length > 0 && (
+        <button className={styles.button} onClick={startCheckoutHandler}>
+          Continue to checkout
+        </button>
+      )}
+    </div>
+  );
+
   return (
-    <Modal onClose={props.onCloseCartModal}>
+    <Modal onClose={props.closeCartModal}>
       <ul className={styles.cartItems}>{cartItems}</ul>
       <div className={styles.total}>
         <span>Total Amount</span>
         <span>${totalAmount}</span>
       </div>
-      <div className={styles.actions}>
-        <button className={styles.buttonAlt} onClick={props.onCloseCartModal}>
-          Close
-        </button>
-        {props.items.length > 0 && (
-          <button className={styles.button}>Order</button>
-        )}
-      </div>
+      {props.checkoutIsShown && <Checkout />}
+      {props.checkoutIsShown || modalActionsBeforeCheckout}
     </Modal>
   );
 };
@@ -61,6 +73,7 @@ const mapStateToProps = (state) => {
   return {
     items: state.cart.items,
     totalAmount: state.cart.totalAmount,
+    checkoutIsShown: state.cart.checkoutIsShown,
   };
 };
 

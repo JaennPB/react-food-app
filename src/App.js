@@ -1,24 +1,14 @@
-import { useState } from "react";
+import { connect } from "react-redux";
 
 import Header from "./components/Header/Header";
 import Meals from "./components/Meals/Meals";
 import Cart from "./components/Cart/Cart";
 
-const App = () => {
-  const [cartModalShown, setCartModalShown] = useState(false);
-
-  const openCartModal = () => {
-    setCartModalShown(true);
-  };
-
-  const closeCartModal = () => {
-    setCartModalShown(false);
-  };
-
+const App = (props) => {
   return (
     <>
-      {cartModalShown && <Cart onCloseCartModal={closeCartModal} />}
-      <Header onOpenCartModal={openCartModal} />
+      {props.cartIsShown && <Cart />}
+      <Header />
       <main>
         <Meals />
       </main>
@@ -26,4 +16,10 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    cartIsShown: state.cart.modalIsShown,
+  };
+};
+
+export default connect(mapStateToProps)(App);

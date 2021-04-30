@@ -3,6 +3,8 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   items: [],
   totalAmount: 0,
+  modalIsShown: false,
+  checkoutIsShown: false,
 };
 
 // HELPER FUNCTIONS ====================================================================
@@ -72,6 +74,16 @@ const removeItems = (state, actions) => {
 
 const cartReducer = (state = initialState, actions) => {
   switch (actions.type) {
+    case actionTypes.OPEN_CART_MODAL:
+      return {
+        ...state,
+        modalIsShown: true,
+      };
+    case actionTypes.CLOSE_CART_MODAL:
+      return {
+        ...state,
+        modalIsShown: false,
+      };
     case actionTypes.ADD_ITEM_TO_CART:
       const [updatedItemsArrayAdd, updatedtTotalAmountAdd] = findDuplicates(
         state,
@@ -91,6 +103,11 @@ const cartReducer = (state = initialState, actions) => {
         ...state,
         items: updatedItemsArrayDel,
         totalAmount: updatedtTotalAmountDel,
+      };
+    case actionTypes.START_CHECKOUT:
+      return {
+        ...state,
+        checkoutIsShown: true,
       };
     default:
       return state;
