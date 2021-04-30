@@ -8,7 +8,12 @@ import * as actions from "../../../store/actions/actionsIndex";
 
 const Checkout = (props) => {
   // TODO: fix css and validation functions
-  const textValidation = (value) => value.trim() !== "";
+  const textValidation = (value) =>
+    value.trim() !== "" &&
+    value.trim().length >= 5 &&
+    value.trim().length <= 30;
+  const pNvalidation = (value) => value.length !== 0 && value.length === 10;
+  const pCValidation = (value) => value.length === 5;
 
   const {
     enteredValue: enteredName,
@@ -26,7 +31,7 @@ const Checkout = (props) => {
     changeValueHandler: setPN,
     blurInputHandler: setPNIsTouched,
     reset: resetPN,
-  } = useValidity(textValidation);
+  } = useValidity(pNvalidation);
 
   const {
     enteredValue: enteredStreet,
@@ -44,7 +49,7 @@ const Checkout = (props) => {
     changeValueHandler: setPC,
     blurInputHandler: setPCIsTouched,
     reset: resetPC,
-  } = useValidity(textValidation);
+  } = useValidity(pCValidation);
 
   const {
     enteredValue: enteredCity,
@@ -90,7 +95,7 @@ const Checkout = (props) => {
 
   return (
     <form onSubmit={submitOrderHandler} className={styles.form}>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${nameIsInvalid && styles.invalid}`}>
         <label htmlFor="name">Name</label>
         <input
           type="text"
@@ -100,10 +105,10 @@ const Checkout = (props) => {
           value={enteredName}
         />
         {nameIsInvalid && (
-          <p className="errorText">Please enter a valid name.</p>
+          <p className={styles.errorText}>Please enter a valid name.</p>
         )}
       </div>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${pNIsInvalid && styles.invalid}`}>
         <label htmlFor="pn">Phone Number</label>
         <input
           type="number"
@@ -113,10 +118,10 @@ const Checkout = (props) => {
           value={enteredPN}
         />
         {pNIsInvalid && (
-          <p className="errorText">Please enter a valid phone number.</p>
+          <p className={styles.errorText}>Please enter a valid phone number.</p>
         )}
       </div>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${streetIsInvalid && styles.invalid}`}>
         <label htmlFor="street">Street</label>
         <input
           type="text"
@@ -126,10 +131,10 @@ const Checkout = (props) => {
           value={enteredStreet}
         />
         {streetIsInvalid && (
-          <p className="errorText">Please enter a valid street.</p>
+          <p className={styles.errorText}>Please enter a valid street.</p>
         )}
       </div>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${pCIsInvalid && styles.invalid}`}>
         <label htmlFor="pc">Postal Code</label>
         <input
           type="number"
@@ -139,10 +144,10 @@ const Checkout = (props) => {
           value={enteredPC}
         />
         {pCIsInvalid && (
-          <p className="errorText">Please enter a valid postal code.</p>
+          <p className={styles.errorText}>Please enter a valid postal code.</p>
         )}
       </div>
-      <div className={styles.control}>
+      <div className={`${styles.control} ${cityIsInvalid && styles.invalid}`}>
         <label htmlFor="city">City</label>
         <input
           type="text"
@@ -152,7 +157,7 @@ const Checkout = (props) => {
           value={enteredCity}
         />
         {cityIsInvalid && (
-          <p className="errorText">Please enter a valid city.</p>
+          <p className={styles.errorText}>Please enter a valid city.</p>
         )}
       </div>
       <div className={styles.actions}>
