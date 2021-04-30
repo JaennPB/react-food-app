@@ -9,13 +9,15 @@ const initialState = {
 
 const findDuplicates = (state, actions) => {
   // find index of duplicate (IF PRESENT)
+  const updatedtTotalAmountAdd =
+    state.totalAmount + actions.item.price * actions.item.amount;
   const existingCartItemIndex = state.items.findIndex(
     (item) => item.id === actions.item.id
   );
   // grab actual object from items array (IF PRESENT)
   const existingCartItem = state.items[existingCartItemIndex];
 
-  let updatedItemsArray;
+  let updatedItemsArrayAdd;
 
   // if duplicate is found
   if (existingCartItem) {
@@ -28,14 +30,15 @@ const findDuplicates = (state, actions) => {
     };
 
     // making copy of original items array
-    updatedItemsArray = [...state.items];
+    updatedItemsArrayAdd = [...state.items];
     // updating array inmutably
-    updatedItemsArray[existingCartItemIndex] = updatedDuplicateItem;
+    updatedItemsArrayAdd[existingCartItemIndex] = updatedDuplicateItem;
   } else {
     // if no duplicated are found
-    updatedItemsArray = state.items.concat(actions.item);
+    updatedItemsArrayAdd = state.items.concat(actions.item);
   }
-  return updatedItemsArray;
+
+  return [updatedItemsArrayAdd, updatedtTotalAmountAdd];
 };
 
 const removeItems = (state, actions) => {
@@ -43,13 +46,13 @@ const removeItems = (state, actions) => {
     (item) => item.id === actions.item.id
   );
   const existingCartItem = state.items[existingCartItemIndex];
-  const updatedtTotalAmount = state.totalAmount - existingCartItem.price;
+  const updatedtTotalAmountDel = state.totalAmount - existingCartItem.price;
 
-  let updatedItemsArray;
+  let updatedItemsArrayDel;
 
   if (existingCartItem.amount === 1) {
-    updatedItemsArray = state.items.filter(
-      (item) => !item.id === actions.item.id
+    updatedItemsArrayDel = state.items.filter(
+      (item) => item.id !== actions.item.id
     );
   }
 
@@ -58,11 +61,11 @@ const removeItems = (state, actions) => {
       ...existingCartItem,
       amount: existingCartItem.amount - 1,
     };
-    updatedItemsArray = [...state.items];
-    updatedItemsArray[existingCartItemIndex] = updatedItem;
+    updatedItemsArrayDel = [...state.items];
+    updatedItemsArrayDel[existingCartItemIndex] = updatedItem;
   }
 
-  return [updatedItemsArray, updatedtTotalAmount];
+  return [updatedItemsArrayDel, updatedtTotalAmountDel];
 };
 
 // REDUCER ========================================================================
@@ -70,18 +73,24 @@ const removeItems = (state, actions) => {
 const cartReducer = (state = initialState, actions) => {
   switch (actions.type) {
     case actionTypes.ADD_ITEM_TO_CART:
-      const addedItems = findDuplicates(state, actions);
+      const [updatedItemsArrayAdd, updatedtTotalAmountAdd] = findDuplicates(
+        state,
+        actions
+      );
       return {
         ...state,
-        totalAmount: state.totalAmount + actions.item.price,
-        items: addedItems,
+        items: updatedItemsArrayAdd,
+        totalAmount: updatedtTotalAmountAdd,
       };
     case actionTypes.REMOVE_ITEM_FROM_CART:
-      const [removedItems, updatedtTotalAmount] = removeItems(state, actions);
+      const [updatedItemsArrayDel, updatedtTotalAmountDel] = removeItems(
+        state,
+        actions
+      );
       return {
         ...state,
-        totalAmount: updatedtTotalAmount,
-        items: removedItems,
+        items: updatedItemsArrayDel,
+        totalAmount: updatedtTotalAmountDel,
       };
     default:
       return state;

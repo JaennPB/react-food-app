@@ -33,12 +33,17 @@ const Cart = (props) => {
     );
   });
 
+  let totalAmount = props.totalAmount.toFixed(2);
+  if (totalAmount <= 0) {
+    totalAmount = 0;
+  }
+
   return (
     <Modal onClose={props.onCloseCartModal}>
       <ul className={styles.cartItems}>{cartItems}</ul>
       <div className={styles.total}>
         <span>Total Amount</span>
-        <span>${props.totalAmount.toFixed(2)}</span>
+        <span>${totalAmount}</span>
       </div>
       <div className={styles.actions}>
         <button className={styles.buttonAlt} onClick={props.onCloseCartModal}>
