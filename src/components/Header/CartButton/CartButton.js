@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import HeaderCartIcon from "../../../Cart/HeaderCartIcon/HeaderCartIcon";
+import HeaderCartIcon from "../../Cart/HeaderCartIcon/HeaderCartIcon";
 
 import styles from "./CartButton.module.css";
 

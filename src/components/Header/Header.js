@@ -1,4 +1,4 @@
-import image from "../../../assets/headerImage.jpg";
+import image from "../../assets/headerImage.jpg";
 import CartButton from "./CartButton/CartButton";
 
 import styles from "./Header.module.css";
