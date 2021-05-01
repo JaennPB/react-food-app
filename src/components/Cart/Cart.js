@@ -2,6 +2,8 @@ import { connect } from "react-redux";
 
 import Modal from "../UI/Modal/Modal";
 import CartItem from "./CartItem/CartItem";
+import Spinner from "../UI/Spinner/Spinner";
+
 import * as actions from "../../store/actions/actionsIndex";
 
 import styles from "./Cart.module.css";
@@ -16,6 +18,7 @@ const Cart = (props) => {
     });
   };
 
+  // FIXME: REMOVE THIS, ADD ACTION DIRECTLY ON JSX
   const removeItemHandler = (item) => {
     props.removeItemFromCart(item);
   };
@@ -56,8 +59,8 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onClose={props.closeCartModal}>
+  const orderingModal = (
+    <>
       <ul className={styles.cartItems}>{cartItems}</ul>
       <div className={styles.total}>
         <span>Total Amount</span>
@@ -65,6 +68,31 @@ const Cart = (props) => {
       </div>
       {props.checkoutIsShown && <Checkout />}
       {props.checkoutIsShown || modalActionsBeforeCheckout}
+    </>
+  );
+
+  let successOrErrorButton = null;
+
+  if (props.submitError || props.submitSuccess) {
+    successOrErrorButton = (
+      <button className={styles.buttonAlt} onClick={props.orderClear}>
+        Go back
+      </button>
+    );
+  }
+
+  return (
+    <Modal onClose={props.closeCartModal}>
+      {!props.submitLoading &&
+        !props.submitSuccess &&
+        !props.submitError &&
+        orderingModal}
+      {props.submitLoading && <Spinner />}
+      {props.submitError && <p>💥Error sending order, try again.💥</p>}
+      {props.submitSuccess && (
+        <p>Order sent and received! It's on the way! 😋🥗</p>
+      )}
+      {successOrErrorButton}
     </Modal>
   );
 };
@@ -74,6 +102,9 @@ const mapStateToProps = (state) => {
     items: state.cart.items,
     totalAmount: state.cart.totalAmount,
     checkoutIsShown: state.cart.checkoutIsShown,
+    submitLoading: state.cart.submitLoading,
+    submitSuccess: state.cart.submitSuccess,
+    submitError: state.cart.submitError,
   };
 };
 

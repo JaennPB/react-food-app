@@ -7,7 +7,6 @@ import styles from "./Checkout.module.css";
 import * as actions from "../../../store/actions/actionsIndex";
 
 const Checkout = (props) => {
-  // TODO: fix css and validation functions
   const textValidation = (value) =>
     value.trim() !== "" &&
     value.trim().length >= 5 &&
@@ -77,12 +76,21 @@ const Checkout = (props) => {
     )
       return;
 
-    console.log("order sent");
-    console.log(enteredName);
-    console.log(enteredPN);
-    console.log(enteredStreet);
-    console.log(enteredPC);
-    console.log(enteredCity);
+    const data = {
+      userData: {
+        name: enteredName,
+        phoneNumber: enteredPN,
+        street: enteredStreet,
+        postalCode: enteredPC,
+        city: enteredCity,
+      },
+      userOrder: {
+        ...props.cartData,
+        total: props.total,
+      },
+    };
+
+    props.asyncOrderSubmit(data);
 
     resetName();
     resetPN();
@@ -92,6 +100,7 @@ const Checkout = (props) => {
   };
 
   // TODO: fix css (form scrolling/hiding)
+  // TODO: ADD Input component
 
   return (
     <form onSubmit={submitOrderHandler} className={styles.form}>
@@ -172,4 +181,11 @@ const Checkout = (props) => {
   );
 };
 
-export default connect(null, actions)(Checkout);
+const mapStateToProps = (state) => {
+  return {
+    cartData: state.cart.items,
+    total: state.cart.totalAmount,
+  };
+};
+
+export default connect(mapStateToProps, actions)(Checkout);

@@ -1,5 +1,7 @@
 .form {
   text-align: right;
+
+  display: flex;
 }
 
 .form button {

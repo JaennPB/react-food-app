@@ -5,6 +5,9 @@ const initialState = {
   totalAmount: 0,
   modalIsShown: false,
   checkoutIsShown: false,
+  submitLoading: false,
+  submitError: null,
+  submitSuccess: false,
 };
 
 // HELPER FUNCTIONS ====================================================================
@@ -108,6 +111,33 @@ const cartReducer = (state = initialState, actions) => {
       return {
         ...state,
         checkoutIsShown: true,
+      };
+    case actionTypes.ORDER_LOADING:
+      return {
+        ...state,
+        submitLoading: true,
+      };
+    case actionTypes.ORDER_SUCCESS:
+      return {
+        ...state,
+        submitLoading: false,
+        submitSuccess: true,
+      };
+    case actionTypes.ORDER_ERROR:
+      return {
+        ...state,
+        submitError: true,
+        submitLoading: false,
+      };
+    case actionTypes.ORDER_CLEAR:
+      return {
+        ...state,
+        items: [],
+        totalAmount: 0,
+        modalIsShown: false,
+        submitError: false,
+        submitSuccess: false,
+        checkoutIsShown: false,
       };
     default:
       return state;
