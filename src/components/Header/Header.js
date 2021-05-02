@@ -1,19 +1,25 @@
-import { connect } from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import image from "../../assets/headerImage.jpg";
-import CartButton from "./CartButton/CartButton";
+import image from '../../assets/headerImage.jpg';
+import CartButton from './CartButton/CartButton';
 
-import * as actions from "../../store/actions/actionsIndex";
+import { cartActions } from '../../store/cartSlice';
 
-import styles from "./Header.module.css";
+import styles from './Header.module.css';
 
 const Header = (props) => {
+  const dispatch = useDispatch();
+
+  const openCartModalHandler = () => {
+    dispatch(cartActions.openCartModal());
+  };
+
   return (
     <>
       <header>
         <div className={styles.toolbar}>
           <h1>Food Order</h1>
-          <CartButton clicked={props.openCartModal} />
+          <CartButton clicked={openCartModalHandler} />
         </div>
         <div className={styles.mainImage}>
           <img src={image} alt="header"></img>
@@ -23,4 +29,4 @@ const Header = (props) => {
   );
 };
 
-export default connect(null, actions)(Header);
+export default Header;

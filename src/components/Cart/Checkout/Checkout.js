@@ -1,14 +1,19 @@
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import useValidity from "../../../hooks/useValidity";
+import useValidity from '../../../hooks/useValidity';
 
-import styles from "./Checkout.module.css";
+import { cartActions } from '../../../store/cartSlice';
+import { asyncOrderSubmit } from '../../../store/cartActions';
 
-import * as actions from "../../../store/actions/actionsIndex";
+import styles from './Checkout.module.css';
 
 const Checkout = (props) => {
+  const dispatch = useDispatch();
+  const cartData = useSelector((state) => state.cart.items);
+  const total = useSelector((state) => state.cart.totalAmount);
+
   const textValidation = (value) =>
-    value.trim() !== "" &&
+    value.trim() !== '' &&
     value.trim().length >= 5 &&
     value.trim().length <= 30;
   const pNvalidation = (value) => value.length !== 0 && value.length === 10;
@@ -85,12 +90,12 @@ const Checkout = (props) => {
         city: enteredCity,
       },
       userOrder: {
-        ...props.cartData,
-        total: props.total,
+        cartData,
+        total: total,
       },
     };
 
-    props.asyncOrderSubmit(data);
+    dispatch(asyncOrderSubmit(data));
 
     resetName();
     resetPN();
@@ -101,6 +106,10 @@ const Checkout = (props) => {
 
   // TODO: fix css (form scrolling/hiding)
   // TODO: ADD Input component
+
+  const closeCartModalHandler = () => {
+    dispatch(cartActions.closeCartModal());
+  };
 
   return (
     <form onSubmit={submitOrderHandler} className={styles.form}>
@@ -170,7 +179,7 @@ const Checkout = (props) => {
         )}
       </div>
       <div className={styles.actions}>
-        <button type="button" onClick={props.closeCartModal}>
+        <button type="button" onClick={closeCartModalHandler}>
           Go back
         </button>
         <button type="submit" disabled={!formIsValid}>
@@ -181,11 +190,4 @@ const Checkout = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    cartData: state.cart.items,
-    total: state.cart.totalAmount,
-  };
-};
-
-export default connect(mapStateToProps, actions)(Checkout);
+export default Checkout;

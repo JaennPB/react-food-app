@@ -1,11 +1,13 @@
-import { connect } from "react-redux";
+import MealItemForm from './MealItemForm/MealItemForm';
+import { useDispatch } from 'react-redux';
 
-import MealItemForm from "./MealItemForm/MealItemForm";
-import * as actions from "../../../store/actions/actionsIndex";
+// actions from redux
+import { cartActions } from '../../../store/cartSlice';
 
-import styles from "./MealItem.module.css";
+import styles from './MealItem.module.css';
 
 const MealItem = (props) => {
+  const dispatch = useDispatch();
   // receives amount from child form and sends new object as new item added to store [{}, {}, ...etc]
   const addItemToCartHandler = (amountFromChild) => {
     const item = {
@@ -15,7 +17,7 @@ const MealItem = (props) => {
       price: props.price,
     };
 
-    props.addItemToCart(item);
+    dispatch(cartActions.addItemToCart(item));
   };
 
   return (
@@ -30,4 +32,4 @@ const MealItem = (props) => {
   );
 };
 
-export default connect(null, actions)(MealItem);
+export default MealItem;

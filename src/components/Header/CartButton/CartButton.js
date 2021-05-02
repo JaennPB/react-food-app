@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import HeaderCartIcon from "../../Cart/HeaderCartIcon/HeaderCartIcon";
+import HeaderCartIcon from '../../Cart/HeaderCartIcon/HeaderCartIcon';
 
-import styles from "./CartButton.module.css";
+import styles from './CartButton.module.css';
 
 const CartButton = (props) => {
+  const items = useSelector((state) => state.cart.items);
   // adding animation!
   const [btnIsAnimating, setBtnIsAnimating] = useState(false);
-
-  const items = props.items;
-
   const bntStyles = `${styles.button} ${btnIsAnimating && styles.bump}`;
 
   // using useEffect to add 'side effect' of animation
@@ -42,10 +40,4 @@ const CartButton = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    items: state.cart.items,
-  };
-};
-
-export default connect(mapStateToProps)(CartButton);
+export default CartButton;

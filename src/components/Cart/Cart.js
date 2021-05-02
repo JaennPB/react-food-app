@@ -1,33 +1,52 @@
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import Modal from "../UI/Modal/Modal";
-import CartItem from "./CartItem/CartItem";
-import Spinner from "../UI/Spinner/Spinner";
+import Modal from '../UI/Modal/Modal';
+import CartItem from './CartItem/CartItem';
+import Spinner from '../UI/Spinner/Spinner';
 
-import * as actions from "../../store/actions/actionsIndex";
+import { cartActions } from '../../store/cartSlice';
 
-import styles from "./Cart.module.css";
-import Checkout from "./Checkout/Checkout";
+import styles from './Cart.module.css';
+import Checkout from './Checkout/Checkout';
 
 const Cart = (props) => {
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.cart.items);
+  const total = useSelector((state) => state.cart.totalAmount);
+  const checkoutIsShown = useSelector(
+    (state) => state.cart.checkoutFormIsShown
+  );
+  const submitLoading = useSelector((state) => state.cart.submitLoading);
+  const submitError = useSelector((state) => state.cart.submitError);
+  const submitSuccess = useSelector((state) => state.cart.submitSuccess);
+
   const addItemHandler = (item) => {
-    props.addItemToCart({
-      ...item,
-      // setting amount back to 1 and NOT from child form
-      amount: 1,
-    });
+    dispatch(
+      cartActions.addItemToCart({
+        ...item,
+        // setting amount back to 1 and NOT from child form
+        amount: 1,
+      })
+    );
   };
 
-  // FIXME: REMOVE THIS, ADD ACTION DIRECTLY ON JSX
   const removeItemHandler = (item) => {
-    props.removeItemFromCart(item);
+    dispatch(cartActions.removeItemFromCart(item));
   };
 
   const startCheckoutHandler = () => {
-    props.startCheckout();
+    dispatch(cartActions.openCheckoutForm());
   };
 
-  const cartItems = props.items.map((item) => {
+  const closeCartModalHandler = () => {
+    dispatch(cartActions.closeCartModal());
+  };
+
+  const orderResetHandler = () => {
+    dispatch(cartActions.orderReset());
+  };
+
+  const cartItems = items.map((item) => {
     return (
       <CartItem
         key={item.id}
@@ -41,17 +60,17 @@ const Cart = (props) => {
     );
   });
 
-  let totalAmount = props.totalAmount.toFixed(2);
+  let totalAmount = total.toFixed(2);
   if (totalAmount <= 0) {
     totalAmount = 0;
   }
 
   const modalActionsBeforeCheckout = (
     <div className={styles.actions}>
-      <button className={styles.buttonAlt} onClick={props.closeCartModal}>
+      <button className={styles.buttonAlt} onClick={closeCartModalHandler}>
         Go back
       </button>
-      {props.items.length > 0 && (
+      {items.length > 0 && (
         <button className={styles.button} onClick={startCheckoutHandler}>
           Continue to checkout
         </button>
@@ -66,46 +85,30 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>${totalAmount}</span>
       </div>
-      {props.checkoutIsShown && <Checkout />}
-      {props.checkoutIsShown || modalActionsBeforeCheckout}
+      {checkoutIsShown && <Checkout />}
+      {checkoutIsShown || modalActionsBeforeCheckout}
     </>
   );
 
   let successOrErrorButton = null;
 
-  if (props.submitError || props.submitSuccess) {
+  if (submitError || submitSuccess) {
     successOrErrorButton = (
-      <button className={styles.buttonAlt} onClick={props.orderClear}>
+      <button className={styles.buttonAlt} onClick={orderResetHandler}>
         Go back
       </button>
     );
   }
 
   return (
-    <Modal onClose={props.closeCartModal}>
-      {!props.submitLoading &&
-        !props.submitSuccess &&
-        !props.submitError &&
-        orderingModal}
-      {props.submitLoading && <Spinner />}
-      {props.submitError && <p>💥Error sending order, try again.💥</p>}
-      {props.submitSuccess && (
-        <p>Order sent and received! It's on the way! 😋🥗</p>
-      )}
+    <Modal onClose={closeCartModalHandler}>
+      {!submitLoading && !submitSuccess && !submitError && orderingModal}
+      {submitLoading && <Spinner />}
+      {submitError && <p>💥Error sending order, try again.💥</p>}
+      {submitSuccess && <p>Order sent and received! It's on the way! 😋🥗</p>}
       {successOrErrorButton}
     </Modal>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    items: state.cart.items,
-    totalAmount: state.cart.totalAmount,
-    checkoutIsShown: state.cart.checkoutIsShown,
-    submitLoading: state.cart.submitLoading,
-    submitSuccess: state.cart.submitSuccess,
-    submitError: state.cart.submitError,
-  };
-};
-
-export default connect(mapStateToProps, actions)(Cart);
+export default Cart;
