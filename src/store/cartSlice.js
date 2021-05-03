@@ -43,8 +43,9 @@ export const cartSlice = createSlice({
       state.totalAmount = state.totalAmount - existingCartItem.price;
       if (existingCartItem.amount === 1) {
         console.log('deleted item');
-        // FIXME: doesn't filter!!
-        state.items.filter((item) => item.id !== action.payload.id);
+        state.items = state.items.filter(
+          (item) => item.id !== action.payload.id
+        );
       } else if (existingCartItem.amount > 1) {
         console.log('-1');
         existingCartItem.amount = existingCartItem.amount - 1;
